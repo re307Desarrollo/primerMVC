@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ExamenModelMVC.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ExamenModelMVC.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Datos">
           <Key>
             <PropertyRef Name="Id" />
@@ -17,15 +17,25 @@
           <Property Name="IsRowCreatedat" Type="datetime" />
           <Property Name="IsRowUdDated" Type="datetime" />
         </EntityType>
+        <!--Errores durante la generación:
+advertencia 6013: La tabla o vista 'Examen.dbo.INT21698_Examen_TblPersona' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
+        <EntityType Name="INT21698_Examen_TblPersona">
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Paterno" Type="varchar" MaxLength="50" />
+          <Property Name="Materno" Type="varchar" MaxLength="50" />
+          <Property Name="Estatus" Type="bit" />
+        </EntityType>-->
         <EntityContainer Name="ExamenModelMVCStoreContainer">
           <EntitySet Name="Datos" EntityType="Self.Datos" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ExamenModelMVC" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Datos">
+        <EntityContainer Name="ExamenEntitiesMiPrimerMVVC" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Datos1Set" EntityType="ExamenModelMVC.Datos1" />
+        </EntityContainer>
+        <EntityType Name="Datos1">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -37,25 +47,22 @@
           <Property Name="IsRowCreatedat" Type="DateTime" Precision="3" />
           <Property Name="IsRowUdDated" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityContainer Name="ExamenEntitiesMiPrimerMVVC" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Datos" EntityType="Self.Datos" />
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ExamenModelMVCStoreContainer" CdmEntityContainer="ExamenEntitiesMiPrimerMVVC">
-          <EntitySetMapping Name="Datos">
-            <EntityTypeMapping TypeName="ExamenModelMVC.Datos">
+          <EntitySetMapping Name="Datos1Set">
+            <EntityTypeMapping TypeName="ExamenModelMVC.Datos1">
               <MappingFragment StoreEntitySet="Datos">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
-                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="IsRowCreatedat" ColumnName="IsRowCreatedat" />
                 <ScalarProperty Name="IsRowUdDated" ColumnName="IsRowUdDated" />
+                <ScalarProperty Name="IsRowCreatedat" ColumnName="IsRowCreatedat" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

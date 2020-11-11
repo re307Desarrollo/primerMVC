@@ -130,7 +130,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Datos.cs">
+    <Compile Include="Models\Datos1.cs">
       <DependentUpon>Model1MiPrimerMvc.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Model1MiPrimerMvc.Context.cs">

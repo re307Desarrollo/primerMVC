@@ -25,6 +25,6 @@ namespace miPrimerMVCC.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<Datos> Datos { get; set; }
+        public DbSet<Datos1> Datos1Set { get; set; }
     }
 }

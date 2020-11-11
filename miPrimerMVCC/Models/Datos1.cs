@@ -12,7 +12,7 @@ namespace miPrimerMVCC.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Datos
+    public partial class Datos1
     {
         public int Id { get; set; }
         public string Nombre { get; set; }

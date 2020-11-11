@@ -13,7 +13,7 @@ namespace miPrimerMVCC.Controllers
         public ActionResult Index()
         {
 
-            var datos = db.Datos;
+            var datos = db.Datos1Set.ToList();
             return View();
         }
 

@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace miPrimerMVCC
+namespace Web100
 {
     public class FilterConfig
     {

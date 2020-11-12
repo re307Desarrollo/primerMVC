@@ -1,34 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
-using miPrimerMVCC.Models;
+using Web100.Models;
+using Web100.Models.ViewModel;
 
-namespace miPrimerMVCC.Controllers
+namespace Web100.Controllers
 {
     public class HomeController : Controller
     {
-        private ExamenEntitiesMiPrimerMVVC db = new ExamenEntitiesMiPrimerMVVC();
+        private ExamenEntitiesPersona db = new ExamenEntitiesPersona();
+
         public ActionResult Index()
         {
+            List<ListaPersona> lista;
 
-            var datos = db.Datos1Set.ToList();
-            return View();
+            lista = (from R in db.Persona
+                    select new ListaPersona
+                    {
+                        Id = R.Id,
+                        Nombre = R.Nombre,
+                        ApellidoPaterno = R.ApellidoPaterno,
+                        ApellidoMaterno = R.ApellidoMaterno,
+                        Estatus = (bool)R.Estatus
+                    }).ToList();
+
+            return View(lista);
         }
 
-        public ActionResult About()
+        public ActionResult Registro()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Actualizar()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
+        
+        [HttpPost]
+        public ActionResult Eliminar(int Id)
+        {
+            try
+            {
+                var del = db.Persona.Find(Id);
+                db.Persona.Remove(del);
+                db.SaveChanges();
+
+                return Content("1");
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message.ToString());
+
+                return Content(e.Message);
+            }
+        }
+
     }
 }

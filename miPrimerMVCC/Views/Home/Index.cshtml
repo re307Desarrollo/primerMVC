@@ -1,31 +1,90 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model List<Web100.Models.ViewModel.ListaPersona>
+
+@{
+    ViewBag.Title = "Personas";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<script >
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+     function Eliminar(Id) {
+        fetch("@Url.Content("~/Home/Eliminar")", {
+                                                    method: "POST",
+                                                    body: JSON.stringify({Id: Id}),
+                                                    headers: {
+                                                                'Accept': "application/json",
+                                                                "Content-Type": "application/json"
+                                                             }
+        }).then(function (response) {
+            if (response.ok)
+                window.location.href = window.location.href
+            else
+                alert("Error al ejecutar :(")
+        }).then(function (Data) {
+            if (Data != "1") {
+                alert(Data)
+            } else {
+                Get();
+            }
+        })
+    }
+
+</script>
+
+    <div class="jumbotron">
+        <h1>Personas</h1>
+        <p class="lead"></p>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+            <table class="table table-responsive table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>No</th>
+                        <th>Nombre</th>
+                        <th>Apellido Paterno</th>
+                        <th>Apellido Materno</th>
+                        <th>Estatus</th>
+                        <th>Editar / Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var dato in Model)
+                    {
+                        <tr>
+                            <td>@dato.Id</td>
+                            <td>@dato.Nombre</td>
+                            <td>@dato.ApellidoPaterno</td>
+                            <td>@dato.ApellidoMaterno</td>
+                            <td>
+                                @if (dato.Estatus == true)
+                                {
+                                    <p>Activo</p>
+                                }
+                                else
+                                {
+                                    <p>Inactivo</p>
+                                }
+                            </td>
+
+                            <td>
+                                <button type="button" class="btn btn-success" href="">Editar</button>
+                                <button type="button" class="btn btn-danger" onclick="Eliminar(@dato.Id)">Eliminar</button>
+                            </td>
+
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+
+            <button type="button" class="btn btn-primary" href="~/Home/Regitro">Nuevo</button>
+
+            <button type="button" class="btn btn-primary" onclick="location.href='@Html.ActionLink("Nuevo", "Registro", "Home")'"></button>
+
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+

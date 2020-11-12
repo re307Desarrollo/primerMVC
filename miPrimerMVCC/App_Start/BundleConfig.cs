@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace miPrimerMVCC
+namespace Web100
 {
     public class BundleConfig
     {

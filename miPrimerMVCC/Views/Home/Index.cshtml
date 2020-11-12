@@ -16,14 +16,14 @@
                                                              }
         }).then(function (response) {
             if (response.ok)
-                window.location.href = window.location.href
+                return response.text()
             else
                 alert("Error al ejecutar :(")
         }).then(function (Data) {
             if (Data != "1") {
                 alert(Data)
             } else {
-                Get();
+                window.location.href = window.location.href
             }
         })
     }
@@ -81,9 +81,7 @@
                 </tbody>
             </table>
 
-            <button type="button" class="btn btn-primary" href="~/Home/Regitro">Nuevo</button>
-
-            <button type="button" class="btn btn-primary" onclick="location.href='@Html.ActionLink("Nuevo", "Registro", "Home")'"></button>
+            <button type="submit" class="btn btn-primary"  onclick="location.href='@Url.Action("Registro", "Home")'">Nuevo</button>
 
         </div>
     </div>

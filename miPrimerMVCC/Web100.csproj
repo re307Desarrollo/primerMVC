@@ -148,6 +148,7 @@
       <DependentUpon>ModelPersona.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModel\ListaPersona.cs" />
+    <Compile Include="Models\ViewModel\RegistroPersona.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

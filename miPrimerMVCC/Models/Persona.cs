@@ -18,6 +18,6 @@ namespace Web100.Models
         public string Nombre { get; set; }
         public string ApellidoPaterno { get; set; }
         public string ApellidoMaterno { get; set; }
-        public Nullable<bool> Estatus { get; set; }
+        public bool Estatus { get; set; }
     }
 }

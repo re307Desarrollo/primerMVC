@@ -59,8 +59,8 @@ C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\bin\System.Web.WebPag
 C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\bin\Newtonsoft.Json.xml
 C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\bin\Antlr3.Runtime.pdb
 C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\bin\es\System.Web.Razor.resources.dll
-C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\obj\Debug\Web100.csprojAssemblyReference.cache
 C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\obj\Debug\Web100.csproj.CoreCompileInputs.cache
 C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\obj\Debug\Web100.csproj.CopyComplete
 C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\obj\Debug\Web100.dll
 C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\obj\Debug\Web100.pdb
+C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\obj\Debug\Web100.csprojAssemblyReference.cache

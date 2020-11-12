@@ -37,6 +37,29 @@ namespace Web100.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult RegistroPersona(RegistroPersona model)
+        {
+            try
+            {
+                var cPersona = new Persona();
+
+                cPersona.Nombre = model.Nombre;
+                cPersona.ApellidoPaterno = model.ApellidoPaterno;
+                cPersona.ApellidoMaterno = model.ApellidoMaterno;
+                cPersona.Estatus = model.Estatus;
+
+                db.Persona.Add(cPersona);
+                db.SaveChanges();
+           
+                return Content("1");
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
+            }
+        }
+
         public ActionResult Actualizar()
         {
             return View();

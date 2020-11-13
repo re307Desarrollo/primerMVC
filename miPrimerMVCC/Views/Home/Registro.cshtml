@@ -8,11 +8,49 @@
 
 <script>
 
+    function Check()
+    {
+        if (document.getElementById('Estatus').checked == true)
+        {
+            document.getElementById('Estatus').value = true;
+        }
+        else
+        {
+            document.getElementById('Estatus').value = false;
+        }
+    }
+
     var urlAgregar = "@Url.Content("~/Home/AgregarRegistro")";
     function Agregar()
     {
-
         fetch(urlAgregar,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                                        Nombre: document.getElementById("Nombre").value,
+                                        ApellidoPaterno: document.getElementById("ApellidoPaterno").value,
+                                        ApellidoMaterno: document.getElementById("ApellidoMaterno").value,
+                                        Estatus: document.getElementById("Estatus").value
+                                    }),
+                headers:{
+                            'Accept': "application/json",
+                            "Content-Type": "application/json"
+                        }
+            }).then(function (response)
+            {
+                if (response.ok)
+                    return response.text(),
+                    document.location.href = "@Url.Content("~/Home/Index")";
+                else
+                    alert("Error")
+            })
+    }
+
+    var urlAddr = "@Url.Content("~/Home/AgregarRegistro")";
+    function AgregarAux()
+    {
+
+        fetch(urlAdd,
             {
                 method: "POST",
                 body: JSON.stringify({
@@ -42,7 +80,7 @@
                 }
             })
     }
-    
+
 </script>
 
 
@@ -57,12 +95,11 @@
     <h4>Persona</h4>
     <hr />
 
-
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" , id = "Nombre" } })
+            @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", id = "Nombre" } })
             @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -70,7 +107,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.ApellidoPaterno, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.ApellidoPaterno, new { htmlAttributes = new { @class = "form-control" , id = "ApellidoPaterno" } })
+            @Html.EditorFor(model => model.ApellidoPaterno, new { htmlAttributes = new { @class = "form-control", id = "ApellidoPaterno" } })
             @Html.ValidationMessageFor(model => model.ApellidoPaterno, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -78,7 +115,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.ApellidoMaterno, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.ApellidoMaterno, new { htmlAttributes = new { @class = "form-control" , id = "ApellidoMaterno" } })
+            @Html.EditorFor(model => model.ApellidoMaterno, new { htmlAttributes = new { @class = "form-control", id = "ApellidoMaterno" } })
             @Html.ValidationMessageFor(model => model.ApellidoMaterno, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -86,38 +123,22 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Estatus, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            <div class="list-group">
+            <div class="custom-control custom-checkbox">
 
-                @{
-                    List<SelectListItem> listItems = new List<SelectListItem>();
-                    listItems.Add(new SelectListItem
-                    {
-                        Selected = true,
-                        Text = "Activo",
-                        Value = "1"
-                    });
-                    listItems.Add(new SelectListItem
-                    {
-                        Text = "Inactivo",
-                        Value = "0"
-                    });
-                }
-
-                @Html.DropDownListFor(model => model.Estatus, listItems, htmlAttributes: new { id = "Estatus", @class = "form-control" })
+                @Html.CheckBoxFor(model => model.Estatus, htmlAttributes: new { @class = "custom-control-input", id = "Estatus", onclick = "Check()", Checked = true } )
 
                 @Html.ValidationMessageFor(model => model.Estatus, "", new { @class = "text-danger" })
 
             </div>
-
-
         </div>
     </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Aceptar" class="btn btn-primary" onclick="Agregar()"/>
+            <input type="submit" value="Aceptar" class="btn btn-primary" onclick="Agregar()" />
         </div>
     </div>
+
 </div>
 }
 

@@ -32,13 +32,33 @@ namespace Web100.Controllers
             return View(lista);
         }
 
+        public ActionResult Editar()
+        {
+            return View(); 
+        }
+
+        [HttpPost]
+        public ActionResult AgregarEdicion(int Id)
+        {
+            var cPersona = new RegistroPersona();
+
+            var oPersona = db.Persona.Find(Id);
+
+            cPersona.Nombre = oPersona.Nombre;
+            cPersona.ApellidoPaterno = oPersona.ApellidoPaterno;
+            cPersona.ApellidoMaterno = oPersona.ApellidoMaterno;
+            cPersona.Estatus = oPersona.Estatus;
+
+            return View(cPersona);
+        }
+
         public ActionResult Registro()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult RegistroPersona(RegistroPersona model)
+        public ActionResult AgregarRegistro(RegistroPersona model)
         {
             try
             {
@@ -60,11 +80,6 @@ namespace Web100.Controllers
             }
         }
 
-        public ActionResult Actualizar()
-        {
-            return View();
-        }
-        
         [HttpPost]
         public ActionResult Eliminar(int Id)
         {

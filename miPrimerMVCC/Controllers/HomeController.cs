@@ -6,6 +6,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Protocols;
 using Web100.Models;
 using Web100.Models.ViewModel;
 
@@ -32,17 +33,13 @@ namespace Web100.Controllers
             return View(lista);
         }
 
-        public ActionResult Editar()
-        {
-            return View(); 
-        }
-
-        [HttpPost]
-        public ActionResult AgregarEdicion(int Id)
+        public ActionResult Editar(int? Id)
         {
             var cPersona = new RegistroPersona();
 
             var oPersona = db.Persona.Find(Id);
+
+            bool bEstatus = cPersona.Estatus;
 
             cPersona.Nombre = oPersona.Nombre;
             cPersona.ApellidoPaterno = oPersona.ApellidoPaterno;
@@ -50,6 +47,29 @@ namespace Web100.Controllers
             cPersona.Estatus = oPersona.Estatus;
 
             return View(cPersona);
+        }
+
+        [HttpPost]
+        public ActionResult AgregarEdicion(RegistroPersona model)
+        {
+            try
+            {
+                var cPersona = db.Persona.Find(model.Id);
+
+                cPersona.Nombre = model.Nombre;
+                cPersona.ApellidoPaterno = model.ApellidoPaterno;
+                cPersona.ApellidoMaterno = model.ApellidoMaterno;
+                cPersona.Estatus = model.Estatus;
+
+                db.Entry(cPersona).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                return Content("1");
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
+            }
         }
 
         public ActionResult Registro()
@@ -62,6 +82,8 @@ namespace Web100.Controllers
         {
             try
             {
+                bool bEstatus = model.Estatus;
+
                 var cPersona = new Persona();
 
                 cPersona.Nombre = model.Nombre;

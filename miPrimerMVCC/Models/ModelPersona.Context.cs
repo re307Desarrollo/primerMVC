@@ -28,5 +28,7 @@ namespace Web100.Models
         public virtual DbSet<Persona> Persona { get; set; }
 
         public System.Data.Entity.DbSet<Web100.Models.ViewModel.RegistroPersona> RegistroPersonas { get; set; }
+
+        public System.Data.Entity.DbSet<Web100.Models.ViewModel.ListaPersona> ListaPersonas { get; set; }
     }
 }

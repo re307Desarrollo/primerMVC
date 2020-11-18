@@ -6,79 +6,148 @@
 
 <script>
 
+    url = "@Url.Content("~/Home/Index")";
+    function ObtienePersonas()
+    {
+        fetch(url)
+            .then(function (response)
+            {
+                return response.text();
+            })
+            .then((data) =>
+            {
+                document.getElementById("TablaPersonas").innerHTML = data;
+            })
+    }
+
+    function Datos() {
+        $.ajax({
+            url: "~/Home/Index",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                var html = '';
+                $.each(result, function (key, item) {
+                    html += '<tr>';
+                    html += '<td>' + item.Id + '</td>';
+                    html += '<td>' + item.Nombre + '</td>';
+                    html += '<td>' + item.ApellidoPaterno + '</td>';
+                    html += '<td>' + item.ApellidoMaterno + '</td>';
+                    html += '<td>' + item.Estatus + '</td>';
+                    html += '<td><a href="#" onclick="return getbyID(' + item.Id + ')">Edit</a> | <a href="#" onclick="Delele(' + item.Id + ')">Delete</a></td>';
+                    html += '</tr>';
+                });
+                $('.TablaPersonas').html(html);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function ConfimarEliminacion(Id)
+    {
+        Swal.fire({
+                title: "Registro " + Id,
+                text: "¿Eliminar?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar",
+            })
+            .then(resultado =>
+            {
+                if (resultado.isConfirmed)
+                {
+                    Eliminar(Id);
+                }
+                else
+                {
+                }
+            });
+    }
+
     function Eliminar(Id)
     {
         fetch("@Url.Content("~/Home/Eliminar")",
             {
-                                                    method: "POST",
-                                                    body: JSON.stringify({Id: Id}),
-                                                    headers: {
-                                                                'Accept': "application/json",
-                                                                "Content-Type": "application/json"
-                                                             }
-            }).then(function (response)
+                method: "POST",
+                body: JSON.stringify({ Id: Id }),
+                headers: {
+                    'Accept': "application/json",
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(function (response)
             {
                 if (response.ok)
-                    return response.text(),
-                    window.location.href = window.location.href
+                {
+                    return response.text();
+                }
                 else
-                    alert("Error")
+                {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Algo salio mal al conectar',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
             })
+            .then(function (Data)
+            {
+                if (Data == "1")
+                {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Registro Eliminado Correctamente',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+                else
+                {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Algo salio mal. Error' + Data,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            })
+
     }
 
 </script>
 
-    <div class="jumbotron">
-      <h1>Personas</h1>
-        <p class="lead"></p>
-    </div>  
+<div class="jumbotron">
+    <h1>Personas</h1>
+    <p class="lead"></p>
+</div>
 
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2">
 
-            <table class="table table-responsive table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>No</th>
-                        <th>Nombre</th>
-                        <th>Apellido Paterno</th>
-                        <th>Apellido Materno</th>
-                        <th>Estatus</th>
-                        <th>Editar / Eliminar</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <table id="contenido" class="table table-responsive table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>No</th>
+                    <th>Nombre</th>
+                    <th>Apellido Paterno</th>
+                    <th>Apellido Materno</th>
+                    <th>Estatus</th>
+                    <th>Editar / Eliminar</th>
+                </tr>
+            </thead>
+            <tbody id="contenido" class="tbody">
+            </tbody>
+        </table>
 
-                    @foreach (var dato in Model)
-                    {
-                        <tr>
-                            <td>@dato.Id</td>
-                            <td>@dato.Nombre</td>
-                            <td>@dato.ApellidoPaterno</td>
-                            <td>@dato.ApellidoMaterno</td>
-                            <td>
-                                @if (dato.Estatus == true)
-                                {
-                                    <p>Activo</p>
-                                }
-                                else
-                                {
-                                    <p>Inactivo</p>
-                                }
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Editar" , "Home", new { id = @dato.Id })'">Editar</button>
-                                <button type="button" class="btn btn-danger" onclick="Eliminar(@dato.Id)">Eliminar</button>
-                            </td>
-                        </tr>
-                    }
+        <button type="submit" class="btn btn-primary" onclick="location.href='@Url.Action("Registro", "Home")'">Nuevo</button>
 
-
-                </tbody>
-            </table>
-
-            <button type="submit" class="btn btn-primary" onclick="location.href='@Url.Action("Registro", "Home")'">Nuevo</button>
-
-        </div>
     </div>
+</div>
+
+
 

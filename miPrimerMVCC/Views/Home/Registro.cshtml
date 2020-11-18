@@ -5,8 +5,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<link href="~/Content/sweetalert/sweet-alert.css" rel="stylesheet" />
+<script src="~/Content/sweetalert/sweet-alert2.js"></script>
 
 <script>
+
+    function Mensaje() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Registro Agregado Correctamente',
+            showConfirmButton: false,
+            timer: 1500
+        })
+    }
 
     function Check()
     {
@@ -39,17 +50,15 @@
             }).then(function (response)
             {
                 if (response.ok)
-                    return response.text(),
-                    document.location.href = "@Url.Content("~/Home/Index")";
+                    Mensaje()
                 else
-                    alert("Error")
+                    response.text()
             })
     }
 
     var urlAddr = "@Url.Content("~/Home/AgregarRegistro")";
     function AgregarAux()
     {
-
         fetch(urlAdd,
             {
                 method: "POST",
@@ -87,59 +96,59 @@
 <h2>Registro</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <h4>Persona</h4>
-    <hr />
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", id = "Nombre" } })
-            @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
-        </div>
-    </div>
+    <div class="form-horizontal">
+        <h4>Persona</h4>
+        <hr />
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.ApellidoPaterno, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.ApellidoPaterno, new { htmlAttributes = new { @class = "form-control", id = "ApellidoPaterno" } })
-            @Html.ValidationMessageFor(model => model.ApellidoPaterno, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ApellidoMaterno, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.ApellidoMaterno, new { htmlAttributes = new { @class = "form-control", id = "ApellidoMaterno" } })
-            @Html.ValidationMessageFor(model => model.ApellidoMaterno, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Estatus, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <div class="custom-control custom-checkbox">
-
-                @Html.CheckBoxFor(model => model.Estatus, htmlAttributes: new { @class = "custom-control-input", id = "Estatus", onclick = "Check()", Checked = true } )
-
-                @Html.ValidationMessageFor(model => model.Estatus, "", new { @class = "text-danger" })
-
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", id = "Nombre" } })
+                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
             </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Aceptar" class="btn btn-primary" onclick="Agregar()" />
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApellidoPaterno, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ApellidoPaterno, new { htmlAttributes = new { @class = "form-control", id = "ApellidoPaterno" } })
+                @Html.ValidationMessageFor(model => model.ApellidoPaterno, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-</div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApellidoMaterno, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ApellidoMaterno, new { htmlAttributes = new { @class = "form-control", id = "ApellidoMaterno" } })
+                @Html.ValidationMessageFor(model => model.ApellidoMaterno, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Estatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="custom-control custom-checkbox">
+
+                    @Html.CheckBoxFor(model => model.Estatus, htmlAttributes: new { @class = "custom-control-input", id = "Estatus", onclick = "Check()", Checked = true })
+
+                    @Html.ValidationMessageFor(model => model.Estatus, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Aceptar" class="btn btn-primary" onclick="Agregar()" />
+            </div>
+        </div>
+
+    </div>
 }
 
 <div>

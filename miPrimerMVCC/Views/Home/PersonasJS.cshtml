@@ -1,0 +1,138 @@
+﻿@model List<Web100.Models.ViewModel.ListaPersona>
+
+@{
+    ViewBag.Title = "PersonasJS";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+
+    function ConfimarEliminacion(Id)
+    {
+        Swal.fire({
+                title: "Registro " + Id,
+                text: "¿Eliminar?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar",
+            })
+            .then(resultado =>
+            {
+                if (resultado.isConfirmed)
+                {
+                    Eliminar(Id);
+                }
+                else
+                {
+                }
+            });
+    }
+
+    function Eliminar(Id)
+    {
+        fetch("@Url.Content("~/Home/Eliminar")",
+            {
+                method: "POST",
+                body: JSON.stringify({ Id: Id }),
+                headers: {
+                    'Accept': "application/json",
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(function (response)
+            {
+                if (response.ok)
+                {
+                    return response.text();
+                }
+                else
+                {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Algo salio mal al conectar',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            })
+            .then(function (Data)
+            {
+                if (Data == "1")
+                {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Registro Eliminado Correctamente',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+                else
+                {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Algo salio mal. Error' + Data,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            })
+
+    }
+
+</script>
+
+<div class="jumbotron">
+    <h1>Personas</h1>
+    <p class="lead"></p>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2">
+
+        <table class="table table-responsive table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>No</th>
+                    <th>Nombre</th>
+                    <th>Apellido Paterno</th>
+                    <th>Apellido Materno</th>
+                    <th>Estatus</th>
+                    <th>Editar / Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var dato in Model)
+                {
+                    <tr>
+                        <td>@dato.Id</td>
+                        <td>@dato.Nombre</td>
+                        <td>@dato.ApellidoPaterno</td>
+                        <td>@dato.ApellidoMaterno</td>
+                        <td>
+                            @if (dato.Estatus == true)
+                            {
+                                <p>Activo</p>
+                            }
+                            else
+                            {
+                                <p>Inactivo</p>
+                            }
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-success" onclick="location.href='@Url.Action("Editar" , "Home", new { id = @dato.Id })'">Editar</button>
+                            <button type="button" class="btn btn-danger" onclick="ConfimarEliminacion(@dato.Id)" id="Eliminar">Eliminar</button>
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn btn-primary" onclick="location.href='@Url.Action("Registro", "Home")'">Nuevo</button>
+
+    </div>
+</div>
+

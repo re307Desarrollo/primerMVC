@@ -64,3 +64,6 @@ C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\obj\Debug\Web100.cspr
 C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\obj\Debug\Web100.dll
 C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\obj\Debug\Web100.pdb
 C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\obj\Debug\Web100.csprojAssemblyReference.cache
+C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\bin\AjaxMin.dll
+C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\bin\Grid.Mvc.Ajax.dll
+C:\Users\laavalosg\Documents\GitHub\primerMVC\miPrimerMVCC\bin\GridMvc.dll

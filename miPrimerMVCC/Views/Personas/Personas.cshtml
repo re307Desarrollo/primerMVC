@@ -4,12 +4,48 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        ObtienePersonas();
+    });
+
+    function ObtienePersonas() {
+                $.ajax({
+                    url: "/Personas/ListaPersonas",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        var html = '';
+                        $.each(result, function (key, item) {
+                            html += '<tr>';
+                            html += '<td>' + item.Id + '</td>';
+                            html += '<td>' + item.Nombre + '</td>';
+                            html += '<td>' + item.ApellidoPaterno + '</td>';
+                            html += '<td>' + item.ApellidoMaterno + '</td>';
+                            html += '<td>' + item.Estatus + '</td>';
+                            html += '<td><a href="#" onclick="return getbyID(' + item.Id + ')">Edit</a> | <a href="#" onclick="Delele(' + item.Id + ')">Delete</a></td>';
+                            html += '</tr>';
+                        });
+                        $('.tbody').html(html);
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+
+</script>
+
 <div class="container">
 
     <h2>Personas</h2>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="clearTextBox();">Agregar</button><br /><br />
 
-    <table class="table table-bordered table-hover">
+    <table class="table table table-responsive table-striped table-bordered">
         <thead>
             <tr>
                 <th>No</th>
@@ -32,7 +68,7 @@
             <div class="modal-header">
                 @*<button type="button" class="close" data-dissmiss="modal"><span aria-hidden="true">&times;</span></button>*@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Add Employee</h4>
+                <h4 class="modal-title" id="myModalLabel">Agregar Persona</h4>
             </div>
             <div class="modal-body">
                 <form>
@@ -42,7 +78,9 @@
 
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label" })
+                            </div>
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control", id = "Nombre" } })
                                 @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
@@ -50,7 +88,9 @@
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.ApellidoPaterno, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.LabelFor(model => model.ApellidoPaterno, htmlAttributes: new { @class = "control-label" })
+                            </div>
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.ApellidoPaterno, new { htmlAttributes = new { @class = "form-control", id = "ApellidoPaterno" } })
                                 @Html.ValidationMessageFor(model => model.ApellidoPaterno, "", new { @class = "text-danger" })
@@ -58,7 +98,9 @@
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.ApellidoMaterno, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.LabelFor(model => model.ApellidoMaterno, htmlAttributes: new { @class = "control-label" })
+                            </div>
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.ApellidoMaterno, new { htmlAttributes = new { @class = "form-control", id = "ApellidoMaterno" } })
                                 @Html.ValidationMessageFor(model => model.ApellidoMaterno, "", new { @class = "text-danger" })
@@ -66,7 +108,9 @@
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Estatus, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.LabelFor(model => model.Estatus, htmlAttributes: new { @class = "control-label" })
+                            </div>
                             <div class="col-md-10">
                                 <div class="custom-control custom-checkbox">
 

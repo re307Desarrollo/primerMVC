@@ -12,6 +12,19 @@
     {
         ObtienePersonas();
     });
+    
+    function Botones(Bandera)
+    {
+        if (Bandera == 1) {
+            document.getElementById('ConfirmarAgregar').style.display = 'inline';
+            document.getElementById('ConfirmarEditar').style.display = 'none';
+        }
+        else
+        {
+            document.getElementById('ConfirmarAgregar').style.display = 'none';
+            document.getElementById('ConfirmarEditar').style.display = 'inline';
+        }
+    }
 
     function Check()
     {
@@ -69,6 +82,8 @@
         $('#Nombre').css('border-color', 'lightgrey');
         $('#ApellidoPaterno').css('border-color', 'lightgrey');
         $('#ApellidoMaterno').css('border-color', 'lightgrey');
+
+        Botones(1);
     }
 
     function ObtienePersonas()
@@ -210,8 +225,8 @@
     function ConfirmarAgregar()
     {
         Swal.fire({
-            title: "Registro",
-            text: "¿Agregar?",
+            title: "Agregar",
+            text: "¿Desea Agregar el Regitro?",
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: "Sí, Agregar",
@@ -328,6 +343,8 @@
         $('#ApellidoPaterno').css('border-color', 'lightgrey');
         $('#ApellidoMaterno').css('border-color', 'lightgrey');
 
+        Botones(0);
+
         $.ajax({
 
             url: "@Url.Content("~/Personas/ObtienePersona")",
@@ -344,8 +361,7 @@
                 $('#Estatus').val(result.Estatus);
 
                 $('#myModal').modal('show');
-                $('#Editar').show();
-                $('#Agregar').hide();
+               
             },
             error: function (errormessage)
             {
@@ -362,11 +378,11 @@
     function ConfirmarEdicion()
     {
         Swal.fire({
-            title: "Registro",
-            text: "¿Agregar?",
+            title: "Editar",
+            text: "¿Desea Editar el Registro?",
             icon: 'question',
             showCancelButton: true,
-            confirmButtonText: "Sí, Agregar",
+            confirmButtonText: "Sí, Editar",
             cancelButtonText: "Cancelar",
         })
             .then(resultado => {

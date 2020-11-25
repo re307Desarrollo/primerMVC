@@ -130,24 +130,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Datos.cs">
-      <DependentUpon>Model1MiPrimerMvc.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1MiPrimerMvc.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1MiPrimerMvc.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1MiPrimerMvc.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1MiPrimerMvc.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1MiPrimerMvc.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1MiPrimerMvc.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -159,25 +141,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\Model1MiPrimerMvc.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model1MiPrimerMvc.Context.cs</LastGenOutput>
-      <DependentUpon>Model1MiPrimerMvc.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\Model1MiPrimerMvc.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1MiPrimerMvc.edmx</DependentUpon>
-      <LastGenOutput>Model1MiPrimerMvc.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\Model1MiPrimerMvc.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1MiPrimerMvc.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model1MiPrimerMvc.edmx.diagram">
-      <DependentUpon>Model1MiPrimerMvc.edmx</DependentUpon>
-    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -206,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

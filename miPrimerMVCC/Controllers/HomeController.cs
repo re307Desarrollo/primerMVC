@@ -9,12 +9,12 @@ namespace miPrimerMVCC.Controllers
 {
     public class HomeController : Controller
     {
-        private ExamenEntitiesMiPrimerMVVC db = new ExamenEntitiesMiPrimerMVVC();
+        
         public ActionResult Index()
         {
 
-            var datos = db.Datos;
             return View();
+
         }
 
         public ActionResult About()

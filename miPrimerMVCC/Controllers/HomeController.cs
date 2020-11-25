@@ -12,8 +12,8 @@ namespace miPrimerMVCC.Controllers
         
         public ActionResult Index()
         {
-
-            return View();
+            PersonalEntities db = new PersonalEntities();
+            return View(db);
 
         }
 

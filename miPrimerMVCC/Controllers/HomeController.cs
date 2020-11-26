@@ -9,11 +9,11 @@ namespace miPrimerMVCC.Controllers
 {
     public class HomeController : Controller
     {
-        
+        PersonalEntities db = new PersonalEntities();
         public ActionResult Index()
         {
-            PersonalEntities db = new PersonalEntities();
-            return View(db);
+            
+            return View(db.personas.ToList());
 
         }
 

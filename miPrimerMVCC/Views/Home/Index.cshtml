@@ -1,40 +1,62 @@
-﻿@model IEnumerable<miPrimerMVCC.Models.PersonalEntities> 
+﻿@model IEnumerable<miPrimerMVCC.Models.personas> 
 
 @{
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
 
 <div class="row">
-    <div class="form-control">
-        <h3>CRUD</h3>
+    <h3>CRUD</h3>
+    
+    <div class="container">
         <button class="btn btn-primary">Nuevo Registro</button>
-        <table>
-            <thead>
-                @Html.DisplayNameFor(model => model.nombres);
-            </thead>
-            <thead>
-                @Html.DisplayNameFor(model => model.apellidop);
-            </thead>
-            <thead>
-                @Html.DisplayNameFor(model => model.apellidom);
-            </thead>
-            <thead>
-                @Html.DisplayNameFor(model => model.edad);
-            </thead>
-            <thead>
-                @Html.DisplayNameFor(model => model.sexo);
-            </thead>
-            <thead>
-                Action
-            </thead>
-            
+        <table class="table table-bordered">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.nombres)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.apellidop)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.apellidom)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.edad)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.sexo)
+                </th>
+                <th>
+                    ACTION
+                </th>
+            </tr>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => p.nombres)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => p.apellidop)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => p.apellidom)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => p.edad)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => p.sexo)
+                    </td>
+                    <td>
+                        <button class="btn btn-success">Edit</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+
+            }
         </table>
-        
+
     </div>
 </div>

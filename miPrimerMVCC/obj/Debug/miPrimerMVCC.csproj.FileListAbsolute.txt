@@ -175,3 +175,4 @@ C:\Users\ossanchezc\Documents\GitHub\Repos\primerMVC\miPrimerMVCC\obj\Debug\miPr
 C:\Users\ossanchezc\Documents\GitHub\Repos\primerMVC\miPrimerMVCC\obj\Debug\miPrimerMVCC.pdb
 C:\Users\ossanchezc\Documents\GitHub\Repos\primerMVC\miPrimerMVCC\bin\EntityFramework.SqlServer.dll
 C:\Users\ossanchezc\Documents\GitHub\Repos\primerMVC\miPrimerMVCC\bin\EntityFramework.SqlServer.xml
+C:\Users\ossanchezc\Documents\GitHub\Repos\primerMVC\miPrimerMVCC\obj\Debug\miPrimerMVCC.csprojAssemblyReference.cache

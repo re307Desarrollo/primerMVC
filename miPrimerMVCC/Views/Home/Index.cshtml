@@ -1,16 +1,15 @@
-﻿@model IEnumerable<miPrimerMVCC.Models.personas> 
+﻿@model IEnumerable<miPrimerMVCC.Models.personas>
 
 @{
     ViewBag.Title = "Home Page";
 }
 
-
 <div class="row">
     <h3>CRUD</h3>
-    
+
     <div class="container">
-        <button class="btn btn-primary">Nuevo Registro</button>
-        <table class="table table-bordered">
+        <button id="registrar-persona" class="btn btn-primary">Nuevo Registro</button>
+        <table class="table table-bordered" id="tblPersons">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.nombres)
@@ -31,32 +30,125 @@
                     ACTION
                 </th>
             </tr>
-            @foreach (var p in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => p.nombres)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => p.apellidop)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => p.apellidom)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => p.edad)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => p.sexo)
-                    </td>
-                    <td>
-                        <button class="btn btn-success">Edit</button>
-                        <button class="btn btn-danger">Delete</button>
-                    </td>
-                </tr>
 
-            }
         </table>
-
+        @using (Html.BeginForm(new { id = "__AjaxAntiForgeryForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <div id='flotante'>
+                <h4>Registro de nueva persona</h4>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Nombre" id="nombre" />
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Apellido Paterno" id="apellidoP" />
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Apellido Materno" id="apellidoM" />
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" placeholder="Edad" id="edad" />
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="sexo">
+                        <option>Masculino</option>
+                        <option>Femenino</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-default" id="btnSave">Guardar</button>
+                    <button class="btn btn-danger" id="cancel">Cancelar</button>
+                </div>
+            </div>
+        }
     </div>
 </div>
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+        $(function () {
+            $('#btnDelete').click(function () {
+                var id = {};
+                id.id = $("#cell1");
+                $.ajax({
+                type: "POST",
+                url: '@Url.Action("deletePerson")',
+                dataType: "json",
+                data: JSON.stringify(id),
+                contentType: "applicaton/json;",
+                success: function () {
+                    alert("Item Deleted")
+                },
+                error: function () {
+                    alert("Error");
+                    }
+                })
+            })
+
+        });
+
+        $(function () {
+            LoadData();
+            $("#btnSave").click(function () {
+            var std = {};
+            std.nombres = $("#nombre").val();
+            std.apellidop = $("#apellidoP").val();
+            std.apellidom = $("#apellidoM").val();
+            std.edad = $("#edad").val();
+            std.sexo = $("#sexo").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("createPerson")',
+                    dataType: "json",
+                    data:  JSON.stringify(std),
+                    contentType: "application/json;",
+                    success: function () {
+                        alert("Data has been added successfully.");
+                        LoadData();
+                },
+                error: function () {
+                    alert("Error while inserting data");
+                    LoadData();
+                }
+            });
+
+            return false;
+        });
+            function LoadData() {
+                $("#tblPersons tbody tr").remove();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("getPersons")',
+                    dataType: 'json',
+                    data: { id: '' },
+                    success: function (data) {
+                        var item = "";
+                        $.each(data, function (i, item) {
+                            var rows = "<tr>"
+                                + "<td id='cell1'>" + item.id + "</td>"
+                                + "<td id='cell2'>" + item.nombres + "</td>"
+                                + "<td id='cell3'>" + item.apellidop + "</td>"
+                                + "<td id='cell4'>" + item.apellidom + "</td>"
+                                + "<td id='cell5'>" + item.edad + "</td>"
+                                + "<td id='cell6'>" + item.sexo + "</td>"
+                                + "<td><button class='btn btn-success'>Edit</button> <button class='btn btn-danger' id='btnDelete'>Delete</button</td>"
+                                + "</tr>";
+                            $('#tblPersons tbody').append(rows)
+                        });
+                    },
+                    error: function (ex) {
+                        var r = jQuery.parseJSON(response.responseText);
+                        alert("Message: " + r.Message);
+                        alert("StackTrace: " + r.StackTrace);
+                        alert("ExceptionType: " + r.ExceptionType);
+                    }
+                });
+            }
+
+    });
+</script>
+}
+
+

@@ -8,23 +8,26 @@
     <h3>CRUD</h3>
 
     <div class="container">
-        <button id="registrar-persona" class="btn btn-primary">Nuevo Registro</button>
+        <button id="registrar-persona" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="showhideBtn()">Nuevo Registro</button>
         <table class="table table-bordered" id="tblPersons">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.nombres)
+                    ID
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.apellidop)
+                    Nombre
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.apellidom)
+                    Apllido Paterno
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.edad)
+                    Apellido Materno
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.sexo)
+                    Edad
+                </th>
+                <th>
+                    Sexo
                 </th>
                 <th>
                     ACTION
@@ -32,33 +35,45 @@
             </tr>
 
         </table>
-        @using (Html.BeginForm(new { id = "__AjaxAntiForgeryForm" }))
+        @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            <div id='flotante'>
-                <h4>Registro de nueva persona</h4>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Nombre" id="nombre" />
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Apellido Paterno" id="apellidoP" />
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Apellido Materno" id="apellidoM" />
-                </div>
-                <div class="form-group">
-                    <input type="number" class="form-control" placeholder="Edad" id="edad" />
-                </div>
-                <div class="form-group">
-                    <select class="form-control" id="sexo">
-                        <option>Masculino</option>
-                        <option>Femenino</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-default" id="btnSave">Guardar</button>
-                    <button class="btn btn-danger" id="cancel">Cancelar</button>
-                </div>
+            <div id='myModal' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title">Registro de nueva persona</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="ID" disabled="disabled" id="idp"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Nombre" id="nombre" />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Apellido Paterno" id="apellidoP" />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Apellido Materno" id="apellidoM" />
+                        </div>
+                        <div class="form-group">
+                            <input type="number" class="form-control" placeholder="Edad" id="edad" />
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" id="sexo">
+                                <option>Masculino</option>
+                                <option>Femenino</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-default" id="btnSave">Guardar</button>
+                            
+                            <button class="btn btn-default" id="btnUpdate" onclick="Update()">Editar</button>
+                            <button class="btn btn-danger" id="cancel" data-dismiss="modal" onclick="clearData()">Cancelar</button>
+                        </div>
+                    </div>
+                </div>               
             </div>
         }
     </div>
@@ -67,26 +82,120 @@
 {
     @Scripts.Render("~/bundles/jqueryval")
 <script type="text/javascript">
-        $(function () {
-            $('#btnDelete').click(function () {
-                var id = {};
-                id.id = $("#cell1");
+    
+    function showhideBtn() {
+        $('#btnUpdate').hide();
+        $('#btnSave').show();
+    }
+    function clearData() {
+        $('#id').val("");
+        $('#nombre').val("");
+        $('#apellidoP').val("");
+        $('#apellidoM').val("");
+        $('#edad').val("");
+        $('#sexo').val("");
+    }
+    function LoadData() {
+                $("#tblPersons tbody tr").remove();
                 $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("getPersons")',
+                    dataType: 'json',
+                    data: { id: '' },
+                    success: function (data) {
+                        var item = "";
+                        $.each(data, function (i, item) {
+                            var rows = "<tr>"
+                                + "<td id='cell1'>" + item.id + "</td>"
+                                + "<td id='cell2'>" + item.nombres + "</td>"
+                                + "<td id='cell3'>" + item.apellidop + "</td>"
+                                + "<td id='cell4'>" + item.apellidom + "</td>"
+                                + "<td id='cell5'>" + item.edad + "</td>"
+                                + "<td id='cell6'>" + item.sexo + "</td>"
+                                + "<td><button class='btn btn-success' onclick='getbyID(" + item.id + ")'>Edit</button> <button class='btn btn-danger' onclick='Delete(" + item.id + ")'> Delete</button</td>"
+                                + "</tr>";
+                            $('#tblPersons tbody').append(rows)
+                        });
+                    },
+                    error: function (eUrl) {
+                        var r = jQuery.parseJSON(response.responseText);
+                        alert("Message: " + r.Message);
+                        alert("StackTrace: " + r.StackTrace);
+                        alert("ExceptionType: " + r.ExceptionType);
+                    }
+                });
+            }
+    function getbyID(ID) {
+        $('#nombre').css('border-color', 'lightgrey');
+        $('#apellidoP').css('border-color', 'lightgrey');
+        $('#apellidoM').css('border-color', 'lightgrey');
+        $('#edad').css('border-color', 'lightgrey');
+        $.ajax({
+            url: '@Url.Action("getID","Home")' + "/" + ID,
+            typr: "GET",
+            contentType: "application/json;charset=UTF-8",
+            dataType: "json",
+            success: function (result) {
+                $('#idp').val(result.id);
+                $('#nombre').val(result.nombres);
+                $('#apellidoP').val(result.apellidop);
+                $('#apellidoM').val(result.apellidom);
+                $('#edad').val(result.edad);
+                $('#sexo').val(result.sexo);
+
+                $('#myModal').modal('show');
+                $('#btnUpdate').show();
+                $('#btnSave').hide();
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        return false;
+    }
+    function Delete(id) {
+        var ans = confirm("¿ Seguro que desea eliminar el registro?");
+        if (ans) {
+            $.ajax({
                 type: "POST",
-                url: '@Url.Action("deletePerson")',
+                url: '@Url.Action("deletePerson","Home")' + "/" + id,
                 dataType: "json",
-                data: JSON.stringify(id),
-                contentType: "applicaton/json;",
+                contentType: "applicaton/json; charset=utf-8",
                 success: function () {
-                    alert("Item Deleted")
+                    alert("Item Deleted");
+                    LoadData();
                 },
                 error: function () {
                     alert("Error");
-                    }
-                })
-            })
+                }
+            });
+        }
 
-        });
+    }
+    function Update() {
+        var IDP = $('#idp').val();
+        var std = {};
+        std.nombres = $("#nombre").val();
+        std.apellidop = $("#apellidoP").val();
+        std.apellidom = $("#apellidoM").val();
+        std.edad = $("#edad").val();
+        std.sexo = $("#sexo").val();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("updatePerson","Home")' + "/" + IDP,
+            dataType: 'json',
+            contentType: "application/json; charset=utf8",
+            data: JSON.stringify(std),
+            success: function () {
+                alert("Updated succesfully");
+                LoadData();
+            },
+            error: function () {
+                alert("Error" + id)
+            }
+        })
+    }
 
         $(function () {
             LoadData();
@@ -107,6 +216,8 @@
                     success: function () {
                         alert("Data has been added successfully.");
                         LoadData();
+                        $('#myModal').modal('hide');
+                        clearData();
                 },
                 error: function () {
                     alert("Error while inserting data");
@@ -115,37 +226,9 @@
             });
 
             return false;
-        });
-            function LoadData() {
-                $("#tblPersons tbody tr").remove();
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("getPersons")',
-                    dataType: 'json',
-                    data: { id: '' },
-                    success: function (data) {
-                        var item = "";
-                        $.each(data, function (i, item) {
-                            var rows = "<tr>"
-                                + "<td id='cell1'>" + item.id + "</td>"
-                                + "<td id='cell2'>" + item.nombres + "</td>"
-                                + "<td id='cell3'>" + item.apellidop + "</td>"
-                                + "<td id='cell4'>" + item.apellidom + "</td>"
-                                + "<td id='cell5'>" + item.edad + "</td>"
-                                + "<td id='cell6'>" + item.sexo + "</td>"
-                                + "<td><button class='btn btn-success'>Edit</button> <button class='btn btn-danger' id='btnDelete'>Delete</button</td>"
-                                + "</tr>";
-                            $('#tblPersons tbody').append(rows)
-                        });
-                    },
-                    error: function (ex) {
-                        var r = jQuery.parseJSON(response.responseText);
-                        alert("Message: " + r.Message);
-                        alert("StackTrace: " + r.StackTrace);
-                        alert("ExceptionType: " + r.ExceptionType);
-                    }
-                });
-            }
+            });
+
+
 
     });
 </script>

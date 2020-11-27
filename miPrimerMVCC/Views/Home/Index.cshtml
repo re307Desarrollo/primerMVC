@@ -41,7 +41,7 @@
             <div id='myModal' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <button type="button" class="close" data-dismiss="modal" onclick="clearData()">×</button>
                         <h4 class="modal-title">Registro de nueva persona</h4>
                     </div>
                     <div class="modal-body">
@@ -95,6 +95,45 @@
         $('#edad').val("");
         $('#sexo').val("");
     }
+    function validate() {
+        var isValid = true;
+        if ($('#nombre').val().trim() == "") {
+            $('#nombre').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#nombre').css('border-color', 'lightgrey');
+        }
+        if ($('#apellidoP').val().trim() == "") {
+            $('#apellidoP').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#apellidoP').css('border-color', 'lightgrey');
+        }
+        if ($('#apellidoM').val().trim() == "") {
+            $('#apellidoM').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#apellidoM').css('border-color', 'lightgrey');
+        }
+        if ($('#edad').val().trim() == "") {
+            $('#edad').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#edad').css('border-color', 'lightgrey');
+        }
+        if ($('#sexo').val().trim() == "") {
+            $('#sexo').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#sexo').css('border-color', 'lightgrey');
+        }
+        return isValid;
+    }  
     function LoadData() {
                 $("#tblPersons tbody tr").remove();
                 $.ajax({
@@ -174,6 +213,10 @@
 
     }
     function Update() {
+        var res = validate();
+        if (res == false) {
+            return false;
+        }
         var IDP = $('#idp').val();
         var per = {};
         per.nombres = $("#nombre").val();
@@ -199,7 +242,12 @@
 
         $(function () {
             LoadData();
+            
             $("#btnSave").click(function () {
+                var res = validate();
+                if (res == false) {
+                    return false;
+                }
             var std = {};
             std.nombres = $("#nombre").val();
             std.apellidop = $("#apellidoP").val();

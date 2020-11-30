@@ -6,39 +6,21 @@
 
 <div class="row">
     <h3>Resgistro de personas</h3>
-
+    
     <div class="container">
         <button id="registrar-persona" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="showhideBtn()">Nuevo Registro</button>
+        <div class="table" id="gridContainer">
+
+        </div>
         <table class="table table-bordered" id="tblPersons">
             <tr>
-                <th>
-                    ID
-                </th>
-                <th>
-                    Nombre
-                </th>
-                <th>
-                    Apllido Paterno
-                </th>
-                <th>
-                    Apellido Materno
-                </th>
-                <th>
-                    Edad
-                </th>
-                <th>
-                    Sexo
-                </th>
-                <th>
-                    ACTION
-                </th>
             </tr>
 
         </table>
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            <div id='myModal' class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div id='myModal' class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" onclick="clearData()">×</button>
@@ -46,7 +28,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="ID" disabled="disabled" id="idp"/>
+                            <input type="text" class="form-control" placeholder="ID" disabled="disabled" id="idp" />
                         </div>
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Nombre" id="nombre" />
@@ -68,12 +50,12 @@
                         </div>
                         <div class="form-group">
                             <button class="btn btn-default" id="btnSave">Guardar</button>
-                            
+
                             <button class="btn btn-default" id="btnUpdate" onclick="Update()">Editar</button>
                             <button class="btn btn-danger" id="cancel" data-dismiss="modal" onclick="clearData()">Cancelar</button>
                         </div>
                     </div>
-                </div>               
+                </div>
             </div>
         }
     </div>
@@ -82,7 +64,7 @@
 {
     @Scripts.Render("~/bundles/jqueryval")
 <script type="text/javascript">
-    
+
     function showhideBtn() {
         $('#btnUpdate').hide();
         $('#btnSave').show();
@@ -93,7 +75,6 @@
         $('#apellidoP').val("");
         $('#apellidoM').val("");
         $('#edad').val("");
-        $('#sexo').val("");
     }
     function validate() {
         var isValid = true;
@@ -133,37 +114,31 @@
             $('#sexo').css('border-color', 'lightgrey');
         }
         return isValid;
-    }  
+    }
     function LoadData() {
-                $("#tblPersons tbody tr").remove();
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("getPersons")',
-                    dataType: 'json',
-                    data: { id: '' },
-                    success: function (data) {
-                        var item = "";
-                        $.each(data, function (i, item) {
-                            var rows = "<tr>"
-                                + "<td id='cell1'>" + item.id + "</td>"
-                                + "<td id='cell2'>" + item.nombres + "</td>"
-                                + "<td id='cell3'>" + item.apellidop + "</td>"
-                                + "<td id='cell4'>" + item.apellidom + "</td>"
-                                + "<td id='cell5'>" + item.edad + "</td>"
-                                + "<td id='cell6'>" + item.sexo + "</td>"
-                                + "<td><button class='btn btn-success' onclick='getbyID(" + item.id + ")'>Edit</button> <button class='btn btn-danger' onclick='Delete(" + item.id + ")'> Delete</button</td>"
-                                + "</tr>";
-                            $('#tblPersons tbody').append(rows)
-                        });
+        $(function () {
+            $("#gridContainer").dxDataGrid({
+                dataSource: "/Home/getPersons",
+                paging: {
+                    pageSize: 5
+                },
+                columns: [
+                    "id",
+                    "nombres",
+                    {
+                        dataField: "apellidop",
+                        caption: "Apellido Paterno"
                     },
-                    error: function (eUrl) {
-                        var r = jQuery.parseJSON(response.responseText);
-                        alert("Message: " + r.Message);
-                        alert("StackTrace: " + r.StackTrace);
-                        alert("ExceptionType: " + r.ExceptionType);
-                    }
-                });
-            }
+                    {
+                        dataField: "apellidom",
+                        caption: "Apellido Materno"
+                    },
+                    "edad", "sexo"
+                ],
+                showBorders: true
+            });
+        });               
+    }
     function getbyID(ID) {
         $('#nombre').css('border-color', 'lightgrey');
         $('#apellidoP').css('border-color', 'lightgrey');
@@ -202,11 +177,11 @@
                 dataType: "json",
                 contentType: "applicaton/json; charset=utf-8",
                 success: function () {
-                    alert("Item Deleted");
+                    DevExpress.ui.notify("Item deleted","success")
                     LoadData();
                 },
                 error: function () {
-                    alert("Error");
+                    DevExpress.ui.notify("Error","error");
                 }
             });
         }
@@ -233,16 +208,17 @@
             success: function () {
                 clearData();
                 LoadData();
+                DevExpress.ui.notify("User updated", "success");
             },
             error: function () {
-                alert("Error")
+                DevExpress.ui.notify("Error", "error");
             }
         })
     }
 
         $(function () {
             LoadData();
-            
+
             $("#btnSave").click(function () {
                 var res = validate();
                 if (res == false) {
@@ -262,22 +238,19 @@
                     data:  JSON.stringify(std),
                     contentType: "application/json;",
                     success: function () {
-                        alert("Data has been added successfully.");
+                        DevExpress.ui.notify("User has been added succesfully", "success");
                         LoadData();
                         $('#myModal').modal('hide');
                         clearData();
                 },
-                error: function () {
-                    alert("Error while inserting data");
+                    error: function () {
+                        DevExpress.ui.notify("Error while inserting data","error");
                     LoadData();
                 }
             });
 
             return false;
             });
-
-
-
     });
 </script>
 }

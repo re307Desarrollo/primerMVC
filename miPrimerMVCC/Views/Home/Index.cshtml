@@ -115,60 +115,109 @@
         }
         return isValid;
     }
+    var sexo = [{
+        "Sexo": "Masculino"
+    }, {
+        "Sexo": "Femenino"
+    }]
     function LoadData() {
         $(function () {
+           
+            var store = new DevExpress.data.CustomStore({
+                key: "id",
+                load: function () {
+                    return $.ajax({
+                        url: "getPersons",
+                        method: "GET"
+                    });
+                },
+                insert: function (values) {
+                    return $.ajax({
+                        url: "createPerson",
+                        method: "POST",
+                        data: values
+                    })
+                },
+                update: function (key, values) {
+                    return $.ajax({
+                        url: "updatePerson" + "/" + key,
+                        method: "POST",
+                        data: values
+                    });
+                },
+                remove: function (key) {
+                    return $.ajax({
+                        url: "deletePerson" + "/" + key,
+                        method: "POST",
+                        success: function () {
+                            DevExpress.ui.notify("Item deleted succesfully","succes");
+                        }
+                    });
+                },
+            });
             $("#gridContainer").dxDataGrid({
-                dataSource: "/Home/getPersons",
+                dataSource: store,
+                searchPanel: {
+                    visible: true,
+                    width: 250,
+                    placeholder: "Search..."
+                },
                 paging: {
-                    pageSize: 5
+                    pageSize: 10
+                },
+                editing: {
+                    mode: "popup",
+                    allowAdding: false,
+                    allowUpdating: true,
+                    allowDeleting: true,
+                    popup: {
+                        title: "Editar persona",
+                        showTitle: true,
+                        width: 700,
+                        height: 500,
+                        position: {
+                            my: "top",
+                            at: "top",
+                            of: window
+                        }
+                    },
+                    form: {
+                        items: [
+                             "id","nombres", "apellidop", "apellidom", "edad"
+                        ]
+                    }  
                 },
                 columns: [
                     "id",
-                    "nombres",
-                    {
+                    "nombres", {
                         dataField: "apellidop",
                         caption: "Apellido Paterno"
-                    },
-                    {
+                    }, {
                         dataField: "apellidom",
                         caption: "Apellido Materno"
+                    }, {
+                        dataField: "sexo",
+                        formItem: {
+                            editorType: "dxDropDownBox"
+                        }
                     },
-                    "edad", "sexo"
+                    "edad"
                 ],
+                summary: {
+                    totalItems: [{
+                        name: "Total",
+                        column: "id",
+                        summaryType: "count",
+                        displayFormat: "Total de registros: {0}",
+                    }],
+                },
                 showBorders: true
             });
         });               
     }
-    function getbyID(ID) {
-        $('#nombre').css('border-color', 'lightgrey');
-        $('#apellidoP').css('border-color', 'lightgrey');
-        $('#apellidoM').css('border-color', 'lightgrey');
-        $('#edad').css('border-color', 'lightgrey');
-        $.ajax({
-            url: '@Url.Action("getID","Home")' + "/" + ID,
-            typr: "GET",
-            contentType: "application/json;charset=UTF-8",
-            dataType: "json",
-            success: function (result) {
-                $('#idp').val(result.id);
-                $('#nombre').val(result.nombres);
-                $('#apellidoP').val(result.apellidop);
-                $('#apellidoM').val(result.apellidom);
-                $('#edad').val(result.edad);
-                $('#sexo').val(result.sexo);
-
-                $('#myModal').modal('show');
-                $('#btnUpdate').show();
-                $('#btnSave').hide();
-
-            },
-            error: function (errormessage) {
-                alert(errormessage.responseText);
-            }
-        });
-        return false;
-    }
+    
     function Delete(id) {
+        
         var ans = confirm("¿ Seguro que desea eliminar el registro?");
         if (ans) {
             $.ajax({
@@ -181,7 +230,7 @@
                     LoadData();
                 },
                 error: function () {
-                    DevExpress.ui.notify("Error","error");
+                    DevExpress.ui.notify("Error while deleting","error");
                 }
             });
         }
@@ -242,6 +291,7 @@
                         LoadData();
                         $('#myModal').modal('hide');
                         clearData();
+                        LoadData();
                 },
                     error: function () {
                         DevExpress.ui.notify("Error while inserting data","error");

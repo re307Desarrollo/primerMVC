@@ -51,34 +51,35 @@ function validate() {
 
 function LoadData() {
     $(function () {
-    $("#tblPersons tbody tr").remove();
-    $.ajax({
-        type: "POST",
-        url: '@Url.Action("getPersons")',
-        dataType: 'json',
-        data: { id: '' },
-        success: function (data) {
-            var item = "";
-            $.each(data, function (i, item) {
-                var rows = "<tr>"
-                    + "<td id='cell1'>" + item.id + "</td>"
-                    + "<td id='cell2'>" + item.nombres + "</td>"
-                    + "<td id='cell3'>" + item.apellidop + "</td>"
-                    + "<td id='cell4'>" + item.apellidom + "</td>"
-                    + "<td id='cell5'>" + item.edad + "</td>"
-                    + "<td id='cell6'>" + item.sexo + "</td>"
-                    + "<td><button class='btn btn-success' onclick='getbyID(" + item.id + ")'>Edit</button> <button class='btn btn-danger' onclick='Delete(" + item.id + ")'> Delete</button</td>"
-                    + "</tr>";
-                $('#tblPersons tbody').append(rows)
-            });
-        },
-        error: function (eUrl) {
-            var r = jQuery.parseJSON(response.responseText);
-            alert("Message: " + r.Message);
-            alert("StackTrace: " + r.StackTrace);
-            alert("ExceptionType: " + r.ExceptionType);
-        }
-    });
+        $("#tblPersons tbody tr").remove();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("getPersons")',
+            dataType: 'json',
+            data: { id: '' },
+            success: function (data) {
+                var item = "";
+                $.each(data, function (i, item) {
+                    var rows = "<tr>"
+                        + "<td id='cell1'>" + item.id + "</td>"
+                        + "<td id='cell2'>" + item.nombres + "</td>"
+                        + "<td id='cell3'>" + item.apellidop + "</td>"
+                        + "<td id='cell4'>" + item.apellidom + "</td>"
+                        + "<td id='cell5'>" + item.edad + "</td>"
+                        + "<td id='cell6'>" + item.sexo + "</td>"
+                        + "<td><button class='btn btn-success' onclick='getbyID(" + item.id + ")'>Edit</button> <button class='btn btn-danger' onclick='Delete(" + item.id + ")'> Delete</button</td>"
+                        + "</tr>";
+                    $('#tblPersons tbody').append(rows)
+                });
+            },
+            error: function (eUrl) {
+                var r = jQuery.parseJSON(response.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+            }
+        });
+    }
 }
 function getbyID(ID) {
     $('#nombre').css('border-color', 'lightgrey');

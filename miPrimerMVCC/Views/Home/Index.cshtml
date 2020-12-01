@@ -20,39 +20,41 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            <div id='myModal' class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" onclick="clearData()">×</button>
-                        <h4 class="modal-title">Registro de nueva persona</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="ID" disabled="disabled" id="idp" />
+            <div id='myModal' class="modal fade" role="dialog" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" onclick="clearData()">×</button>
+                            <h4 class="modal-title">Registro de nueva persona</h4>
                         </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Nombre" id="nombre" />
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Apellido Paterno" id="apellidoP" />
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Apellido Materno" id="apellidoM" />
-                        </div>
-                        <div class="form-group">
-                            <input type="number" class="form-control" placeholder="Edad" id="edad" />
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control" id="sexo">
-                                <option>Masculino</option>
-                                <option>Femenino</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-default" id="btnSave">Guardar</button>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="ID" disabled="disabled" id="idp" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Nombre" id="nombre" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Apellido Paterno" id="apellidoP" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Apellido Materno" id="apellidoM" />
+                            </div>
+                            <div class="form-group">
+                                <input type="number" class="form-control" placeholder="Edad" id="edad" />
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" id="sexo">
+                                    <option class="">Masculino</option>
+                                    <option class="">Femenino</option>
+                                </select>
+                            </div>
+                                <div class="form-group">
+                                    <button class="btn btn-default" id="btnSave">Guardar</button>
 
-                            <button class="btn btn-default" id="btnUpdate" onclick="Update()">Editar</button>
-                            <button class="btn btn-danger" id="cancel" data-dismiss="modal" onclick="clearData()">Cancelar</button>
+                                    <button class="btn btn-default" id="btnUpdate" onclick="Update()">Editar</button>
+                                    <button class="btn btn-danger" id="cancel" data-dismiss="modal" onclick="clearData()">Cancelar</button>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -127,7 +129,7 @@
                 key: "id",
                 load: function () {
                     return $.ajax({
-                        url: "getPersons",
+                        url: "Home/getPersons",
                         method: "GET"
                     });
                 },
@@ -140,18 +142,15 @@
                 },
                 update: function (key, values) {
                     return $.ajax({
-                        url: "updatePerson" + "/" + key,
+                        url: "Home/updatePerson" + "/" + key,
                         method: "POST",
                         data: values
                     });
                 },
                 remove: function (key) {
                     return $.ajax({
-                        url: "deletePerson" + "/" + key,
+                        url: "Home/deletePerson" + "/" + key,
                         method: "POST",
-                        success: function () {
-                            DevExpress.ui.notify("Item deleted succesfully","succes");
-                        }
                     });
                 },
             });
@@ -182,8 +181,13 @@
                         }
                     },
                     form: {
-                        items: [
-                             "id","nombres", "apellidop", "apellidom", "edad"
+                        items: [{
+                            dataField: "id",
+                            editorOptions: {
+                                disabled: true
+                            }
+                        },
+                             "nombres", "apellidop", "apellidom", "edad"
                         ]
                     }  
                 },
